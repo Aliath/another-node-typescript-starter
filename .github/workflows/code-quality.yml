@@ -23,8 +23,8 @@ jobs:
       - name: Cache dependencies
         uses: actions/cache@v1
         with:
-          path: ./api/node_modules
-          key: ${{ runner.OS }}-project-${{ hashFiles('**/package-lock.json') }}
+          path: node_modules
+          key: ${{ runner.OS }}-project-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.OS }}-project-${{ env.cache-name }}-
             ${{ runner.OS }}-project-
