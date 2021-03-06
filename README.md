@@ -8,7 +8,15 @@ As you can guess `another-node-typescript-starter` is another starter that you c
 
 What distinguishes this framework? Inspired by the automatic definition of views in libraries such as `nuxt`&nbsp;and&nbsp;`next` - controllers are imported automatically (so far only at the lowest level, without subdirectories), and their path is based on the name of the file they point to - for example the controller exported in the path `@/api/controllers/getRandomNumber` will be registered to`${HOST}/api/v1/get-random-number`. You no longer have to get lost in huge files containing controller imports, or look for what path they refer to. In addition, the template itself is not imposed, except for the layout of the controllers, you can freely create directories and place files tailored to your needs.
 
-Relative imports were another problem that was a barrier that prevented me from using ready-made solutions. According to the documentation of ready-made starters, in deep directories we should be stuck in a hell of paths that looks something like this: `import * from '../../../../api/...'`. To avoid this, the recommended solution is to include the library in the main script. Here I solved it at the typescript configuration level - I used [ttypescript](https://github.com/cevek/ttypescript) to make it as painless as possible, so starting the path with `@` - you are referring to the `src` directory. Sounds simple?
+Relative imports were another problem that was a barrier that prevented me from using ready-made solutions. According to the documentation of ready-made starters, in deep directories we should be stuck in a hell of paths that looks something like this: `import * from '../../../../api/...'`. To avoid this, the recommended solution is to include the library in the main script. Here I solved it at the typescript configuration level - I used [ttypescript](https://github.com/cevek/ttypescript) to make it as painless as possible, so starting the path with `@` - you are referring to the `src` directory - example: `import * from '@/api/...'`. Looks simple?
+
+## What's included?
+
+- [express](https://github.com/expressjs/express) to handle HTTP requests
+- [@typeofweb/schema](https://github.com/typeofweb/schema) to validate payloads from HTTP requests
+- [winston](https://github.com/winstonjs/winston) to log some stuff
+
+In addition to code building tools and broadly understood development, the following libraries were also used in the project. They are completely arbitrary - if you want to use a replacement or get rid of any of them - go ahead.
 
 ## package.json scripts
 
