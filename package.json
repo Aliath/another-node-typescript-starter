@@ -35,7 +35,7 @@
   "scripts": {
     "dev": "nodemon --quiet --watch \"src/**\" --ext \"ts,json,js\" --ignore \"src/**/*.spec.ts\" --exec \"ts-node --files --compiler ttypescript src/index.ts\"",
     "start": "node dist",
-    "test": "yarn run unit:test",
+    "test": "yarn run test:unit",
     "test:unit": "jest",
     "build": "rimraf dist && ttsc",
     "lint": "eslint ./src/**/** --quiet",
