@@ -1,33 +1,21 @@
+import { config } from '@/utils/config';
+import logger from '@/utils/logger';
 import { paramCase } from 'change-case';
 import type { Router } from 'express';
-import { promises as fs } from 'fs';
+import readDirRecursive from 'fs-readdir-recursive';
 import { resolve as pathResolve } from 'path';
 
-import logger from './logger';
-
-type RegisterControllerParams = {
+type RegisteredController = {
   path: string;
   handler: Router;
 };
 
-const registeredControllers = new Map();
-
-export const registerController = ({
-  path,
-  handler,
-}: RegisterControllerParams) => {
-  if (registeredControllers.has(path)) {
-    logger.error(`Controller ${path} will be overrided!`);
-  }
-
-  logger.info(`Controller ${path} has been registered!`);
-  registeredControllers.set(path, handler);
-};
+let registeredControllers: RegisteredController[] = [];
 
 export const scanForControllers = async (path = '../api/controllers') => {
   const controllersDirectory = pathResolve(__dirname, path);
 
-  const filenames = await fs.readdir(controllersDirectory);
+  const filenames = readDirRecursive(controllersDirectory);
   const filteredFilenames = filenames.filter((name) => name.endsWith('.ts'));
 
   for (const controllerPath of filteredFilenames) {
@@ -35,14 +23,24 @@ export const scanForControllers = async (path = '../api/controllers') => {
       pathResolve(controllersDirectory, controllerPath)
     );
 
-    const transformedPath = '/' + paramCase(controllerPath.replace('.ts', ''));
-    registerController({
+    const transformedPath =
+      '/' +
+      controllerPath
+        .split('/')
+        .map((item) => paramCase(item.replace('.ts', '')))
+        .join('/');
+
+    registeredControllers = registeredControllers.concat({
       path: transformedPath,
       handler: controllerHandler,
     });
+
+    logger.info(
+      `Controller for path ${config.apiNamespace}${transformedPath} has been registered!`,
+    );
   }
 };
 
-export const getRegisteredControllers = (): Record<string, Router> => {
-  return Object.fromEntries(registeredControllers);
+export const getRegisteredControllers = () => {
+  return [...registeredControllers];
 };

@@ -1,5 +1,6 @@
 import { serverBootstrap } from '@/bootstraps/serverBootstrap';
-import { logger, config } from '@/utils';
+import { config } from '@/utils/config';
+import { logger } from '@/utils/logger';
 import express from 'express';
 
 (async () => {

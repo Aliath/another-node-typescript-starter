@@ -1,3 +1,4 @@
+import { config } from '@/utils/config';
 import {
   getRegisteredControllers,
   scanForControllers,
@@ -11,9 +12,10 @@ export const serverBootstrap = async (expressInstance: Express) => {
 
   const namespaceRouter = Router();
   await scanForControllers();
-  Object.entries(getRegisteredControllers()).forEach(([path, handler]) => {
+  getRegisteredControllers().forEach(({ path, handler }) => {
     namespaceRouter.use(path, handler);
   });
-  expressInstance.use('/api/v1', namespaceRouter);
+
+  expressInstance.use(config.apiNamespace, namespaceRouter);
   expressInstance.use(errorHandler);
 };
