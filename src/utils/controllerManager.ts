@@ -10,13 +10,23 @@ type RegisteredController = {
   handler: Router;
 };
 
+const availableExtensions = ['.ts', '.js'];
 let registeredControllers: RegisteredController[] = [];
+
+const stripExtensions = (fileName: string) => {
+  return availableExtensions.reduce(
+    (fileName, extension) => fileName.replace(extension, ''),
+    fileName,
+  );
+};
 
 export const scanForControllers = async (path = '../api/controllers') => {
   const controllersDirectory = pathResolve(__dirname, path);
 
   const filenames = readDirRecursive(controllersDirectory);
-  const filteredFilenames = filenames.filter((name) => name.endsWith('.ts'));
+  const filteredFilenames = filenames.filter((name) =>
+    availableExtensions.some((extension) => name.endsWith(extension)),
+  );
 
   for (const controllerPath of filteredFilenames) {
     const { default: controllerHandler } = await import(
@@ -27,7 +37,7 @@ export const scanForControllers = async (path = '../api/controllers') => {
       '/' +
       controllerPath
         .split('/')
-        .map((item) => paramCase(item.replace('.ts', '')))
+        .map((fileName) => paramCase(stripExtensions(fileName)))
         .join('/');
 
     registeredControllers = registeredControllers.concat({
