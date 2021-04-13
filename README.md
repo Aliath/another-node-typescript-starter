@@ -13,7 +13,6 @@ Relative imports were another problem that was a barrier that prevented me from 
 ## What's included?
 
 - [express](https://github.com/expressjs/express) to handle HTTP requests
-- [@typeofweb/schema](https://github.com/typeofweb/schema) to validate payloads from HTTP requests
 - [winston](https://github.com/winstonjs/winston) to log some stuff
 
 In addition to code building tools and broadly understood development, the following libraries were also used in the project. They are completely arbitrary - if you want to use a replacement or get rid of any of them - go ahead.
